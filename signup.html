@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Ayurvedic Prakriti Analysis</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #a8dadc, #f1faee);
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #1d3557;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+    h2 {
+      color: #457b9d;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    input:focus {
+      border-color: #457b9d;
+      outline: none;
+      box-shadow: 0 0 5px rgba(69, 123, 157, 0.5);
+    }
+    .password-strength {
+      margin-top: 5px;
+      font-size: 12px;
+      text-align: left;
+    }
+    .weak { color: #e53e3e; }
+    .medium { color: #dd6b20; }
+    .strong { color: #38a169; }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    .checkbox input {
+      width: auto;
+      margin-right: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #457b9d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #1d3557;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: #457b9d;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    #message {
+      color: #e53e3e;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    #success {
+      color: #38a169;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      display: none;
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 600px) {
+      body { padding: 20px; }
+      .container { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Create Your Account</h2>
+    <p>Join to discover your Prakriti dosha.</p>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <div class="password-strength" id="strength"></div>
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+    <div class="checkbox">
+      <input type="checkbox" id="terms" required />
+      <label for="terms">I agree to the Terms and Conditions</label>
+    </div>
+    <button onclick="signUp()" id="signupBtn">Sign Up</button>
+    <a href="index.html">Already have an account? Sign In</a>
+    <a href="#" onclick="alert('Forgot Password? Feature coming soon!')">Forgot Password?</a>
+    <p id="message"></p>
+    <p id="success">Account created successfully! Redirecting...</p>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const strengthEl = document.getElementById('strength');
+
+    // Real-time password strength check
+    passwordInput.addEventListener('input', function() {
+      const password = passwordInput.value;
+      let strength = 'weak';
+      if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+        strength = 'strong';
+      } else if (password.length >= 6) {
+        strength = 'medium';
+      }
+      strengthEl.textContent = `Password Strength: ${strength.charAt(0).toUpperCase() + strength.slice(1)}`;
+      strengthEl.className = `password-strength ${strength}`;
+    });
+
+    function signUp() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const termsChecked = document.getElementById("terms").checked;
+      const messageEl = document.getElementById("message");
+      const successEl = document.getElementById("success");
+      const signupBtn = document.getElementById("signupBtn");
+
+      // Clear previous messages
+      messageEl.innerText = "";
+      successEl.style.display = "none";
+
+      // Validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        messageEl.innerText = "Please enter a valid email address.";
+        return;
+      }
+      if (!password || password.length < 6) {
+        messageEl.innerText = "Password must be at least 6 characters.";
+        return;
+      }
+      if (password !== confirmPassword) {
+        messageEl.innerText = "Passwords do not match.";
+        return;
+      }
+      if (!termsChecked) {
+        messageEl.innerText = "Please agree to the Terms and Conditions.";
+        return;
+      }
+
+      // Check if user already exists
+      if (localStorage.getItem(email)) {
+        messageEl.innerText = "An account with this email already exists!";
+        return;
+      }
+
+      // Store user data (not secure; for demo only)
+      localStorage.setItem(email, JSON.stringify({ email, password }));
+
+      // Success feedback
+      signupBtn.disabled = true;
+      successEl.style.display = "block";
+      setTimeout(() => {
+        window.location.href = "index.html";  // Redirect to sign-in
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
