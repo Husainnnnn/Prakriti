@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prakriti Analysis - Ayurvedic Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #a8dadc, #f1faee);
+      color: #1d3557;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #457b9d;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #457b9d;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .questions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .question {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      transition: box-shadow 0.3s;
+    }
+    .question:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      color: #1d3557;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      background: white;
+      transition: border-color 0.3s;
+    }
+    select:focus {
+      border-color: #457b9d;
+      outline: none;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #457b9d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 10px 5px 0 0;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #1d3557;
+    }
+    .result {
+      margin-top: 30px;
+      background: #f1faee;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 5px solid #457b9d;
+      animation: fadeIn 0.5s ease-in;
+    }
+    .result h3 {
+      color: #457b9d;
+    }
+    .tips {
+      margin-top: 20px;
+      background: #a8dadc;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .tips h4 {
+      margin-top: 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hidden { display: none; }
+    @media (max-width: 600px) {
+      .questions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Check if user is signed in
+    if (!localStorage.getItem("currentUser")) {
+      alert("Please sign in first!");
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <div class="container">
+    <h2>Discover Your Prakriti</h2>
+    <p>Answer the questions below to find your dominant dosha: Vata, Pitta, or Kapha.</p>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="questions">
+      <div class="question">
+        <label for="skin">Skin Type:</label>
+        <select id="skin">
+          <option value="">Select...</option>
+          <option value="vata">Dry</option>
+          <option value="pitta">Oily</option>
+          <option value="kapha">Balanced</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="body">Body Build:</label>
+        <select id="body">
+          <option value="">Select...</option>
+          <option value="vata">Thin</option>
+          <option value="pitta">Muscular</option>
+          <option value="kapha">Heavier</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="hair">Hair Type:</label>
+        <select id="hair">
+          <option value="">Select...</option>
+          <option value="vata">Dry/Thin</option>
+          <option value="pitta">Oily/Thinning</option>
+          <option value="kapha">Thick/Oily</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="mindset">Mindset:</label>
+        <select id="mindset">
+          <option value="">Select...</option>
+          <option value="vata">Restless</option>
+          <option value="pitta">Intense</option>
+          <option value="kapha">Calm</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="emotion">Emotions:</label>
+        <select id="emotion">
+          <option value="">Select...</option>
+          <option value="vata">Anxious</option>
+          <option value="pitta">Angry</option>
+          <option value="kapha">Content</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="diet">Diet Preference:</label>
+        <select id="diet">
+          <option value="">Select...</option>
+          <option value="vata">Warm/Dry</option>
+          <option value="pitta">Hot/Spicy</option>
+          <option value="kapha">Light/Sweet</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="weather">Weather Preference:</label>
+        <select id="weather">
+          <option value="">Select...</option>
+          <option value="vata">Warm</option>
+          <option value="pitta">Cool</option>
+          <option value="kapha">Warm and Moist</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="digestion">Digestion:</label>
+        <select id="digestion">
+          <option value="">Select...</option>
+          <option value="vata">Irregular</option>
+          <option value="pitta">Strong</option>
+          <option value="kapha">Slow</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="sleep">Sleep Pattern:</label>
+        <select id="sleep">
+          <option value="">Select...</option>
+          <option value="vata">Light</option>
+          <option value="pitta">Moderate</option>
+          <option value="kapha">Deep</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="energy">Energy Level:</label>
+        <select id="energy">
+          <option value="">Select...</option>
+          <option value="vata">Bursty</option>
+          <option value="pitta">High</option>
+          <option value="kapha">Steady</option>
+        </select>
+      </div>
+    </div>
+
+    <button onclick="calculatePrakriti()">Get Result</button>
+    <button onclick="resetQuiz()">Reset Quiz</button>
+
+    <div id="result" class="result hidden">
+      <!-- Results will appear here -->
+    </div>
+  </div>
+
+  <script>
+    const totalQuestions = 10;
+    const progressFill = document.getElementById('progressFill');
+
+    // Update progress bar based on answered questions
+    function updateProgress() {
+      const selects = document.querySelectorAll('select');
+      const answered = Array.from(selects).filter(s => s.value !== '').length;
+      const percentage = (answered / totalQuestions) * 100;
+      progressFill.style.width = percentage + '%';
+    }
+
+    // Add event listeners to selects for progress update
+    document.querySelectorAll('select').forEach(select => {
+      select.addEventListener('change', updateProgress);
+    });
+
+    function calculatePrakriti() {
+      const traits = [
+        "skin", "body", "hair", "mindset", "emotion", "diet", "weather", "digestion", "sleep", "energy"
+      ];
+      const scores = { vata: 0, pitta: 0, kapha: 0 };
+
+      // Check if all questions are answered
+      for (let id of traits) {
+        const value = document.getElementById(id).value;
+        if (!value) {
+          alert("Please answer all questions before getting the result!");
+          return;
+        }
+        scores[value]++;
+      }
+
+      // Calculate percentages
+      const total = traits.length;
+      const percentages = {
+        vata: Math.round((scores.vata / total) * 100),
+        pitta: Math.round((scores.pitta / total) * 100),
+        kapha: Math.round((scores.kapha / total) * 100)
+      };
+
+      // Determine dominant, secondary, least
+      const sortedDoshas = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+      const [dominant, secondary, least] = sortedDoshas;
+
+      // Reasons and tips
+      const reasons = {
+        vata: "Traits like dryness, restlessness, and thin build indicate Vata.",
+        pitta: "Traits like intensity, spicy food preference, and irritability indicate Pitta.",
+        kapha: "Traits like calmness, heaviness, and deep sleep indicate Kapha."
+      };
+      const tips = {
+        vata: "Focus on warm, grounding foods like soups and root vegetables. Practice yoga for stability.",
+        pitta: "Opt for cooling foods like cucumbers and mint. Avoid spicy meals to balance heat.",
+        kapha: "Incorporate light, stimulating activities and foods like ginger to boost energy."
+      };
+
+      // Display results
+      document.getElementById("result").innerHTML = `
+        <h3>Your Prakriti Analysis</h3>
+        <p><strong>Dominant Dosha:</strong> ${dominant.toUpperCase()} (${percentages[dominant]}%) - ${reasons[dominant]}</p>
+        <p><strong>Secondary Dosha:</strong> ${secondary.toUpperCase()} (${percentages[secondary]}%) - ${reasons[secondary]}</p>
+        <p><strong>Least Dosha:</strong> ${least.toUpperCase()} (${percentages[least]}%) - ${reasons[least]}</p>
+        <div class="tips">
+          <h4>Personalized Tips for ${dominant.toUpperCase()}:</h4>
+          <p>${tips[dominant]}</p>
+        </div>
+        <button onclick="saveResult('${dominant}', ${percentages[dominant]})">Save Result</button>
+        <button onclick="viewSavedResults()">View Saved Results</button>
+      `;
+      document.getElementById("result").classList.remove('hidden');
+    }
+
+    function resetQuiz() {
+      document.querySelectorAll('select').forEach(select => select.value = '');
+      document.getElementById('result').classList.add('hidden');
+      updateProgress();
+    }
+
+    function saveResult(dosha, percentage) {
+      const user = localStorage.getItem("currentUser");
+      const results = JSON.parse(localStorage.getItem(`${user}_results`)) || [];
+      results.push({ dosha, percentage, date: new Date().toLocaleString() });
+      localStorage.setItem(`${user}_results`, JSON.stringify(results));
+      alert("Result saved!");
+    }
+
+    function viewSavedResults() {
+      const user = localStorage.getItem("currentUser");
+      const results = JSON.parse(localStorage.getItem(`${user}_results`)) || [];
+      if (results.length === 0) {
+        alert("No saved results found.");
+        return;
+      }
+      let message = "Your Saved Results:\n";
+      results.forEach((r, i) => message += `${i+1}. ${r.dosha.toUpperCase()} (${r.percentage}%) - ${r.date}\n`);
+      alert(message);
+    }
+  </script>
+</body>
+</html>
