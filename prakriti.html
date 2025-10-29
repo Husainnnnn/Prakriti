@@ -121,7 +121,7 @@
 </head>
 <body>
   <script>
-    // Check if user is signed in
+    
     if (!localStorage.getItem("currentUser")) {
       alert("Please sign in first!");
       window.location.href = "index.html";
@@ -242,7 +242,7 @@
     <button onclick="resetQuiz()">Reset Quiz</button>
 
     <div id="result" class="result hidden">
-      <!-- Results will appear here -->
+    
     </div>
   </div>
 
@@ -250,7 +250,7 @@
     const totalQuestions = 10;
     const progressFill = document.getElementById('progressFill');
 
-    // Update progress bar based on answered questions
+   
     function updateProgress() {
       const selects = document.querySelectorAll('select');
       const answered = Array.from(selects).filter(s => s.value !== '').length;
@@ -258,7 +258,7 @@
       progressFill.style.width = percentage + '%';
     }
 
-    // Add event listeners to selects for progress update
+    
     document.querySelectorAll('select').forEach(select => {
       select.addEventListener('change', updateProgress);
     });
@@ -269,7 +269,7 @@
       ];
       const scores = { vata: 0, pitta: 0, kapha: 0 };
 
-      // Check if all questions are answered
+      
       for (let id of traits) {
         const value = document.getElementById(id).value;
         if (!value) {
@@ -279,7 +279,7 @@
         scores[value]++;
       }
 
-      // Calculate percentages
+      
       const total = traits.length;
       const percentages = {
         vata: Math.round((scores.vata / total) * 100),
@@ -287,11 +287,11 @@
         kapha: Math.round((scores.kapha / total) * 100)
       };
 
-      // Determine dominant, secondary, least
+      
       const sortedDoshas = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
       const [dominant, secondary, least] = sortedDoshas;
 
-      // Reasons and tips
+     
       const reasons = {
         vata: "Traits like dryness, restlessness, and thin build indicate Vata.",
         pitta: "Traits like intensity, spicy food preference, and irritability indicate Pitta.",
@@ -303,7 +303,7 @@
         kapha: "Incorporate light, stimulating activities and foods like ginger to boost energy."
       };
 
-      // Display results
+  
       document.getElementById("result").innerHTML = `
         <h3>Your Prakriti Analysis</h3>
         <p><strong>Dominant Dosha:</strong> ${dominant.toUpperCase()} (${percentages[dominant]}%) - ${reasons[dominant]}</p>
