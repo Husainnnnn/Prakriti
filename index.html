@@ -112,11 +112,11 @@
       const messageEl = document.getElementById("message");
       const successEl = document.getElementById("success");
 
-      // Clear previous messages
+    
       messageEl.innerText = "";
       successEl.style.display = "none";
 
-      // Basic validation
+    
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
         messageEl.innerText = "Please enter a valid email address.";
@@ -127,13 +127,13 @@
         return;
       }
 
-      // Retrieve user data from localStorage (not secure; for demo only)
+      
       const savedUser = JSON.parse(localStorage.getItem(email));
       if (savedUser && savedUser.password === password) {
-        localStorage.setItem("currentUser", email);  // Store logged-in user
+        localStorage.setItem("currentUser", email);  
         successEl.style.display = "block";
         setTimeout(() => {
-          window.location.href = "prakriti.html";  // Redirect to quiz
+          window.location.href = "prakriti.html"; 
         }, 1000);
       } else {
         messageEl.innerText = "Invalid email or password. Please try again.";
