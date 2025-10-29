@@ -137,8 +137,7 @@
   <script>
     const passwordInput = document.getElementById('password');
     const strengthEl = document.getElementById('strength');
-
-    // Real-time password strength check
+    
     passwordInput.addEventListener('input', function() {
       const password = passwordInput.value;
       let strength = 'weak';
@@ -160,11 +159,11 @@
       const successEl = document.getElementById("success");
       const signupBtn = document.getElementById("signupBtn");
 
-      // Clear previous messages
+      
       messageEl.innerText = "";
       successEl.style.display = "none";
 
-      // Validation
+     
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
         messageEl.innerText = "Please enter a valid email address.";
@@ -183,20 +182,19 @@
         return;
       }
 
-      // Check if user already exists
+     
       if (localStorage.getItem(email)) {
         messageEl.innerText = "An account with this email already exists!";
         return;
       }
 
-      // Store user data (not secure; for demo only)
+     
       localStorage.setItem(email, JSON.stringify({ email, password }));
 
-      // Success feedback
       signupBtn.disabled = true;
       successEl.style.display = "block";
       setTimeout(() => {
-        window.location.href = "index.html";  // Redirect to sign-in
+        window.location.href = "index.html";
       }, 1500);
     }
   </script>
